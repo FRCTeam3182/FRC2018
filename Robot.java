@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.Talon;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -29,7 +30,13 @@ public class Robot extends IterativeRobot {
     RobotDrive m_robotDrive;
     Joystick m_stick;
     Timer m_timer;
-
+    
+    //Talon Initiation
+    Talon armTalon = Robot.armTalon; 
+    Talon intakeR = Robot.intakeR;
+    Talon intakeL = Robot.intakeL;
+    
+    
   //Initializes the variables in the robotInit method, this method is called when the robot is initializing
     public void robotInit() {
          m_robotDrive = new RobotDrive(0,1);
@@ -78,21 +85,28 @@ public class Robot extends IterativeRobot {
 	/**
 	 * This function is called periodically during test mode.
 	 */
+	
+	
+	
 	@Override
 	public void testPeriodic() {
 	}
 	
-	public void armUp()
+	//Arm up ^
+	public void arm()
 	{
-		
-		
+		if (Robot.m_stick.getRawButton(5)) {
+			armTalon(1);
+		}
+		if (Robot.m_stick.getRawButton(3)) {
+			armTalon(-1);
+		}
+		if (!Robot.m_stick.getRawButton(5) && !Robot.m_stick.getRawButton(3)) {
+			armTalon(0);
+		}
 	}
 	
-	public void armDown()
-	{
-		
-		
-	}
+
 	
 	public void cubeIn()
 	{
@@ -142,13 +156,10 @@ public class Robot extends IterativeRobot {
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------
-
 package org.usfirst.frc.team3182.robot;
-
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -161,7 +172,6 @@ public class Robot extends IterativeRobot {
 	private static final String kCustomAuto = "My Auto";
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
-
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -172,7 +182,6 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
 	}
-
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
 	 * between different autonomous modes using the dashboard. The sendable
@@ -191,7 +200,6 @@ public class Robot extends IterativeRobot {
 		// defaultAuto);
 		System.out.println("Auto selected: " + m_autoSelected);
 	}
-
 	/**
 	 * This function is called periodically during autonomous.
 	 
@@ -207,13 +215,11 @@ public class Robot extends IterativeRobot {
 				break;
 		}
 	}
-
 	/**
 	 * This function is called periodically during operator control.
 	 
 	@Overrideodic() {
 	}
-
 	/**
 	public void teleopPeri
 	 * This function is called periodically during test mode.
